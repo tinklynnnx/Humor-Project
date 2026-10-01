@@ -67,7 +67,7 @@ export default function EventsPage() {
                 console.error("Saved events error:", savedError);
             } else {
                 setSavedEvents(
-                    (savedData ?? []).map((item) => item.event_id)
+                    (savedData ?? []).map((item: any) => item.event_id)
                 );
             }
         } else {
