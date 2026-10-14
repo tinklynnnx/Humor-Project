@@ -208,7 +208,7 @@ export default function EventsPage() {
 
                         <p>
                             Check back soon for more NYC EDM events.
-                        </p>git reflog expire --expire=now --all
+                        </p>
                     </div>
                 ) : (
                     /* Events */
