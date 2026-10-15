@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "EDM. — AI ideas for real NYC nights",
-    description: "Create AI nightlife captions, vote with the crowd, and discover your next NYC EDM night.",
+    title: "RaveRank — Your scene. Your sound.",
+    description: "Track festivals you have attended, discover electronic music artists, and vote on AI-generated festival media.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

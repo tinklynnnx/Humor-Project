@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-const SYSTEM_PROMPT = `You are the creative voice of EDM., a playful NYC nightlife community for college students.
-Generate one short, original social caption for a fictional or real-feeling NYC EDM night.
-The caption should feel current, witty, specific to NYC nightlife, and natural—not corporate or overly polished.
-Keep it to 1–3 sentences. Do not use hashtags unless they genuinely improve the joke.
-Never claim an event is real unless the user supplied its name.`;
+const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
+
+const SYSTEM_PROMPT = `You are the creative voice of RaveRank, a global electronic music and festival community.
+Generate one vivid, original festival caption or short recap based on the user prompt.
+Make it sensory, energetic, and specific to dance music culture without copying real artists or claiming invented details are factual.
+Keep it to 1–3 sentences. Do not use hashtags unless they genuinely improve the caption.
+The output is AI-generated text that community members can vote on.`;
 
 export async function POST(request: Request) {
     try {
@@ -30,7 +32,7 @@ export async function POST(request: Request) {
         }
 
         const geminiResponse = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`,
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -38,9 +40,13 @@ export async function POST(request: Request) {
                     systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
                     contents: [{
                         role: "user",
-                        parts: [{ text: `Create a ${vibe} NYC EDM caption based on this idea:\n${prompt}` }]
+                        parts: [{ text: `Create a ${vibe} EDM festival caption based on this idea:\n${prompt}` }]
                     }],
-                    generationConfig: { temperature: 0.9, maxOutputTokens: 160 }
+                    generationConfig: {
+                        temperature: 0.9,
+                        maxOutputTokens: 600,
+                        thinkingConfig: { thinkingLevel: "low" },
+                    }
                 }),
             }
         );
